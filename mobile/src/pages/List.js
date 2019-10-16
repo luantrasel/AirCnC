@@ -18,7 +18,12 @@ export default function List() {
 
             socket.on('booking_response', booking => {
                 Alert.alert(`Sua reserva em ${booking.spot.company} em ${booking.date} foi ${booking.approved ?'APROVADA' : 'REJEITADA'}`);
-            })
+            });
+
+            socket.on('_ping', function(data){
+                // console.log('Ping received from server. Sending pong to server');
+                socket.emit('_pong', {beat: 1});
+            });
         })
     },[]);
 

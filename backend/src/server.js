@@ -19,16 +19,33 @@ mongoose.connect('mongodb+srv://aircnc:aircnc@aircnc-ggkux.mongodb.net/AirCnC?re
     useUnifiedTopology: true
 });
 
-const connectedUsers = {}; // relação de id do socket com id do usuario
+const connectedUsers = {}; //relação de id do socket com id do usuario
 io.on('connection', socket =>{
-    //console.log('Usuario conectado', socket.id); //dispara ao se conectar via mobile ou web
     const user_id = socket.handshake.query.user_id;
+    console.log('Socket Conectado: ', socket.id);  
+    console.log('Usuario Conectado: ', user_id);      
 
     //armazena id do socket do usuario
     connectedUsers[user_id] = socket.id;
+
+    //ping-pong para evitar a perda da conexao
+    //'pong' é reservado
+    socket.on('_pong', data => {
+        console.log('Pong received from client', socket.id);
+    });
+    
 });
 
-// faz com que todas requisicoes tenham as informações io e connectedUsers disponiveis, em todas rotas
+//envia ping a cada x milisegundos
+const pingFrequency = 8000;
+function sendPing(){
+    console.log('Sending ping to clients');
+    setTimeout(sendPing, pingFrequency);
+    io.sockets.emit('_ping', { beat : 1 });
+}
+setTimeout(sendPing, pingFrequency);
+
+//faz com que todas requisicoes tenham as informações io e connectedUsers disponiveis, em todas rotas
 app.use((req, res, next) => {
     req.io = io;
     req.connectedUsers = connectedUsers;

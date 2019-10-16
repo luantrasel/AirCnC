@@ -15,13 +15,19 @@ export default function Dashboard(){
         query: { user_id }
     }), [user_id]);
 
-    useEffect(() => {    
-        socket.on('booking_request', data => {            
+    useEffect(() => {
+        socket.on('booking_request', data => {  
+            console.log('Booking request received', data);
             setRequests([...requests, data]); //adiciona ao fim do array
         });
-
-        //socket.emit('idMensagem','hello'); //o cliente tambem pode enviar mensagem para o backend
     },[requests, socket]);
+
+    useEffect(() => {
+        socket.on('_ping', data => {
+            console.log('Ping received from server. Sending pong to server', data);
+            socket.emit('_pong', {beat: 1});
+        });
+    },[socket]);
 
     useEffect(() => {
         async function loadSpots(){
