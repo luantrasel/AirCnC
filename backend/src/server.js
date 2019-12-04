@@ -22,8 +22,8 @@ mongoose.connect('mongodb+srv://aircnc:aircnc@aircnc-ggkux.mongodb.net/AirCnC?re
 const connectedUsers = {}; //relação de id do socket com id do usuario
 io.on('connection', socket =>{
     const user_id = socket.handshake.query.user_id;
-    console.log('Socket Conectado: ', socket.id);  
-    console.log('Usuario Conectado: ', user_id);      
+    //console.log('Socket Conectado: ', socket.id);  
+    //console.log('Usuario Conectado: ', user_id);      
 
     //armazena id do socket do usuario
     connectedUsers[user_id] = socket.id;
@@ -31,7 +31,7 @@ io.on('connection', socket =>{
     //ping-pong para evitar a perda da conexao
     //'pong' é reservado
     socket.on('_pong', data => {
-        console.log('Pong received from client', socket.id);
+        //console.log('Pong received from client', socket.id);
     });
     
 });
@@ -39,7 +39,7 @@ io.on('connection', socket =>{
 //envia ping a cada x milisegundos
 const pingFrequency = 8000;
 function sendPing(){
-    console.log('Sending ping to clients');
+    //console.log('Sending ping to clients');
     setTimeout(sendPing, pingFrequency);
     io.sockets.emit('_ping', { beat : 1 });
 }

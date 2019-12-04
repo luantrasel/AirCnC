@@ -9,16 +9,22 @@ module.exports = {
         return res.json(spots);
     },
 
-    async store (req, res) {
-        const filename = req.file.filename;
+    async store (req, res) {   
+        var filename = "";
+        if (req.file) {
+            filename = req.file.filename;
+        }
+        
         const {company, techs, price} = req.body;
         const user_id = req.headers.user_id;
 
         const user = await User.findById(user_id);
 
-        if (!user){
-            return res.status(400).json({error: "User does not exists"});
-        }
+        if (!user) {            
+            return res.status(400).json({error: "User does not exists"})
+        }/* else if (filename === "") {                         
+            return res.status(400).json({error: "Selecione uma imagem"})
+        }*/
 
         const spot = await Spot.create({            
             user: user_id,

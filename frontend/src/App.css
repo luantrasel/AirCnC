@@ -63,6 +63,11 @@ body, input, button {
   font-weight: normal;
 }
 
+div.error {
+  color: #f05a5b;
+  margin-bottom: 12px;
+}
+
 .content form input {
   margin-bottom: 20px;
   border: 1px solid;

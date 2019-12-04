@@ -17,14 +17,14 @@ export default function Dashboard(){
 
     useEffect(() => {
         socket.on('booking_request', data => {  
-            console.log('Booking request received', data);
+            //console.log('Booking request received', data);
             setRequests([...requests, data]); //adiciona ao fim do array
         });
     },[requests, socket]);
 
     useEffect(() => {
         socket.on('_ping', data => {
-            console.log('Ping received from server. Sending pong to server', data);
+            //console.log('Ping received from server. Sending pong to server', data);
             socket.emit('_pong', {beat: 1});
         });
     },[socket]);
